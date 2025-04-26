@@ -15,12 +15,17 @@ public interface NhacNoVayRepository extends JpaRepository<NhacNoVayEntity, Stri
     @Query(value = "select n from NhacNoVayEntity n  WHERE n.COMPONENT = :component and n.CUSTOMER_NO = :customer_no and n.CUSTOMER_NO = :customer_no and n.RUN_DATE =:RUN_DATE\n")
     List<NhacNoVayEntity> getDataByComponentAndCustomerNo(@Param("component") String component, @Param("customer_no") String customer_no, @Param("RUN_DATE") String runDate);
 
-    //@Query(value = "select n from NhacNoVayEntity n  WHERE n.COMPONENT = :component and n.CUSTOMER_NO = :customer_no and n.CUSTOMER_NO = :customer_no\n", nativeQuery = true)
-//List<KhachHangEntity> getDataByComponentAndCustomerNo(@Param("customer_no") String customer_no, @Param("component") String component);
     @Query("SELECT T.MA_CB_BAN\n" +
             "FROM NhacNoVayEntity T\n" +
             "WHERE T.MA_CB_BAN IS NOT NULL AND T.RUN_DATE =:RUN_DATE AND T.COMPONENT=:component group by ma_cb_ban\n")
     List<String> getMaCBB(@Param("RUN_DATE") String runDate, @Param("component") String component);
+
+
+    @Query(
+            value = "SELECT NV_EMAIL FROM V_EMAIL_NHAC_NO_DS_NV@DBLINK_QLNSTL WHERE CD_MA IN ('CV1056','CV1091','CV2058','CV2098','QL2009','QL1009','QL1047','CV3023') AND CD_MA NOT IN ('CV3019','CV3016','CV3006','CV3004') AND SUBSTR(DV_MA,1,3)=:branch",
+            nativeQuery = true
+    )
+    List<String> getListCBBByBranch(@Param("branch") String branch);
 
 
     @Query("SELECT T FROM NhacNoVayEntity T WHERE COMPONENT IN ('VAY_DEN_HAN','OD_DEN_HAN') AND T.MA_CB_BAN = :maCBB AND T.RUN_DATE =:RUN_DATE\n")

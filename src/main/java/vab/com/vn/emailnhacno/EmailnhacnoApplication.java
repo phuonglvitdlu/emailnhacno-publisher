@@ -10,7 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+        "vab.com.vn",            // gói của bạn hiện tại
+        "org.com.vab"            // gói chứa ProducerService
+})
 public class EmailnhacnoApplication {
 
 //    final static Logger logger = LoggerFactory.getLogger(HrAutomailApplication.class);

@@ -54,8 +54,8 @@ public class JobService {
             return;
         }
 
-        String[] components = {"OD_DEN_HAN", "VAY_DEN_HAN", "OD_HET_HAN", "OD_QUA_HAN", "VAY_QUA_HAN"};
-//        String[] components = {"VAY_QUA_HAN"};
+//        String[] components = {"OD_DEN_HAN", "VAY_DEN_HAN", "OD_HET_HAN", "OD_QUA_HAN", "VAY_QUA_HAN"};
+        String[] components = {"VAY_DEN_HAN"};
 
         for (String component : components) {
             LOGGER.info("Processing component: {}", component);
@@ -225,6 +225,9 @@ public class JobService {
         if (listCBB.isEmpty()) {
             LOGGER.warn("Không tìm thấy danh sách CBB cho component: {}", component);
             return;
+        }
+        if (component.equals("VAY_DEN_HAN")) {
+            String a = "aa";
         }
 
         MailHistoryKey mailHistoryKey = new MailHistoryKey();
