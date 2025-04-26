@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vab.com.vn.emailnhacno.service.JobService;
-import vab.com.vn.emailnhacno.service.canbo.VayDH;
+import vab.com.vn.emailnhacno.service.canbo.VAYQH;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,8 +14,11 @@ public class TextController {
 //    @Autowired
 //    JobService jobService;
 
+//    @Autowired
+//    VayDH vaydh;
+
     @Autowired
-    VayDH vaydh;
+    VAYQH vaydh;
 
     @PostMapping("/send-mail")
     public String sendMail() {
