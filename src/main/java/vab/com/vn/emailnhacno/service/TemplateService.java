@@ -212,17 +212,20 @@ public class TemplateService {
                         .append("    <td>").append(customer.getSO_HOP_DONG_VAY() == null ? "" : customer.getSO_HOP_DONG_VAY()).append("</td>\n")
                         .append("    <td>").append(customer.getACCOUNT_NUMBER() == null ? "" : customer.getACCOUNT_NUMBER()).append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_VAY() != null ? updateDate(formatDate(customer.getNGAY_VAY()), 0) : "").append("</td>\n")
+                        .append("    <td>").append(customer.getTEN_KHACH_HANG() == null ? "" : customer.getTEN_KHACH_HANG()).append("</td>\n")
+                        .append("    <td>").append(customer.getRM_PHUTRACH() == null ? "" : customer.getRM_PHUTRACH()).append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_DEN_HAN() != null ? updateDate(formatDate(customer.getNGAY_DEN_HAN()), 0) : "").append("</td>\n")
                         .append("    <td>").append(customer.getTAIKHOAN_TRICH_NO() == null ? "" : customer.getTAIKHOAN_TRICH_NO()).append("</td>\n").append("</td>\n")
                         .append("    <td>").append(customer.getSO_NGAY_QUAHAN()).append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_QH_GOC() != null ? updateDate(formatDate(customer.getNGAY_QH_GOC()), 0) : "").append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_QH_LAI() != null ? updateDate(formatDate(customer.getNGAY_QH_LAI()), 0) : "").append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getSO_TIEN_VAY() != null ? new BigDecimal(customer.getSO_TIEN_VAY().toString()) : BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getDU_NO_GOC_HIENTAI() != null ? new BigDecimal(customer.getDU_NO_GOC_HIENTAI().toString()) : BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getGOC_PHAI_TRA() != null ? new BigDecimal(customer.getGOC_PHAI_TRA().toString()) : BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getLAI_PHAI_TRA() != null ? new BigDecimal(customer.getLAI_PHAI_TRA().toString()) : BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format((tongSoTienPhaiTra))).append("</td>\n")
-                        .append("</tr>\n");
+                        .append("    <td>").append(currencyFormatter.format(customer.getSO_TIEN_VAY() != null ? new BigDecimal(customer.getSO_TIEN_VAY().toString()) : BigDecimal.ZERO).replace("₫", "")).append("</td>\n")
+                        .append("    <td>").append(currencyFormatter.format(customer.getDU_NO_GOC_HIENTAI() != null ? new BigDecimal(customer.getDU_NO_GOC_HIENTAI().toString()) : BigDecimal.ZERO).replace("₫", "")).append("</td>\n")
+                        .append("    <td>").append(currencyFormatter.format(customer.getGOC_PHAI_TRA() != null ? new BigDecimal(customer.getGOC_PHAI_TRA().toString()) : BigDecimal.ZERO).replace("₫", "")).append("</td>\n")
+                        .append("    <td>").append(currencyFormatter.format(customer.getLAI_PHAI_TRA() != null ? new BigDecimal(customer.getLAI_PHAI_TRA().toString()) : BigDecimal.ZERO).replace("₫", "")).append("</td>\n")
+                        .append("    <td>")
+                        .append(currencyFormatter.format(tongSoTienPhaiTra).replace("₫", ""))
+                        .append("</td>\n");
 
             } else if (component.equals("OD_QUA_HAN")) {
                 contentDongKH.append(" <tr>\n")
@@ -230,33 +233,38 @@ public class TemplateService {
                         .append("    <td>").append(customer.getSO_HOP_DONG_VAY() == null ? "" : customer.getSO_HOP_DONG_VAY()).append("</td>\n")
                         .append("    <td>").append(customer.getACCOUNT_NUMBER() == null ? "" : customer.getACCOUNT_NUMBER()).append("</td>\n")
                         .append("    <td>").append(customer.getTEN_KHACH_HANG() == null ? "" : customer.getTEN_KHACH_HANG()).append("</td>\n")
+                        .append("    <td>").append(customer.getCUSTOMER_NO() == null ? "" : customer.getCUSTOMER_NO()).append("</td>\n")
+                        .append("    <td>").append(customer.getRM_PHUTRACH() == null ? "" : customer.getRM_PHUTRACH()).append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_VAY() != null ? updateDate(formatDate(customer.getNGAY_VAY()), 0) : "").append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_DEN_HAN() != null ? updateDate(formatDate(customer.getNGAY_DEN_HAN()), 0) : "").append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_DEN_HAN_THANHTOAN() != null ? updateDate(formatDate(customer.getNGAY_DEN_HAN_THANHTOAN()), 0) : "").append("</td>\n")
-                        .append("    <td>").append(customer.getSO_TIEN_VAY() != null ? currencyFormatter.format(new BigDecimal(customer.getSO_TIEN_VAY().toString())) : currencyFormatter.format(BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getLAI_PHAI_TRA() != null ? new BigDecimal(customer.getLAI_PHAI_TRA().toString()) : BigDecimal.ZERO)).append("</td>\n")
+                        .append("    <td>")
+                        .append(
+                                (customer.getSO_TIEN_VAY() != null
+                                        ? currencyFormatter.format(new BigDecimal(customer.getSO_TIEN_VAY().toString().replace("₫", "").replace(",", "").trim()))
+                                        : currencyFormatter.format(BigDecimal.ZERO)
+                                ).replace("₫", "").trim()
+                        )
+                        .append("</td>\n")
+                        .append("    <td>").append(currencyFormatter.format(customer.getLAI_PHAI_TRA() != null ? new BigDecimal(customer.getLAI_PHAI_TRA().toString().replace("₫", "")) : BigDecimal.ZERO).replace("₫", "")).append("</td>\n")
                         .append("</tr>\n");
             } else if (component.equals("OD_DEN_HAN")) {
                 contentDongKH.append(" <tr>\n")
                         .append("    <td>").append(index++).append("</td>\n")
                         .append("    <td>").append(customer.getSO_HOP_DONG_VAY() == null ? "" : customer.getSO_HOP_DONG_VAY()).append("</td>\n")
                         .append("    <td>").append(customer.getACCOUNT_NUMBER() == null ? "" : customer.getACCOUNT_NUMBER()).append("</td>\n")
+                        .append("    <td>").append(customer.getCUSTOMER_NO() == null ? "" : customer.getCUSTOMER_NO()).append("</td>\n")
                         .append("    <td>").append(customer.getTEN_KHACH_HANG() == null ? "" : customer.getTEN_KHACH_HANG()).append("</td>\n")
+                        .append("    <td>").append(customer.getRM_PHUTRACH() == null ? "" : customer.getRM_PHUTRACH()).append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_VAY() != null ? updateDate(formatDate(customer.getNGAY_VAY()), 0) : "").append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_DEN_HAN() != null ? updateDate(formatDate(customer.getNGAY_DEN_HAN()), 0) : "").append("</td>\n")
-                        .append("    <td>").append(customer.getSO_TIEN_VAY() != null ? currencyFormatter.format(new BigDecimal(customer.getSO_TIEN_VAY().toString())) : currencyFormatter.format(BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(customer.getNGAY_DEN_HAN_THANHTOAN() != null ? updateDate(formatDate(customer.getNGAY_DEN_HAN_THANHTOAN()), 0) : "").append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getDU_NO_GOC_HIENTAI() != null ? new BigDecimal(customer.getDU_NO_GOC_HIENTAI().toString()) : BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getGOC_PHAI_TRA() != null ? new BigDecimal(customer.getGOC_PHAI_TRA().toString()) : BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getLAI_PHAI_TRA() != null ? new BigDecimal(customer.getLAI_PHAI_TRA().toString()) : BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>")
-                        .append(
-                                currencyFormatter.format(
-                                        (customer.getTONG_PHAI_TRA())
-                                )
-                        )
-                        .append("</td>\n")
+                        .append("    <td>").append(customer.getSO_TIEN_VAY() != null ? currencyFormatter.format(new BigDecimal(customer.getSO_TIEN_VAY().toString())).replace("₫", "").trim() : currencyFormatter.format(BigDecimal.ZERO).replace("₫", "").trim()).append("</td>\n")
+                        .append("    <td>").append(currencyFormatter.format(customer.getDU_NO_GOC_HIENTAI() != null ? new BigDecimal(customer.getDU_NO_GOC_HIENTAI().toString()) : BigDecimal.ZERO).replace("₫", "").replace("₫", "").trim()).append("</td>\n")
+                        .append("    <td>").append(currencyFormatter.format(customer.getGOC_PHAI_TRA() != null ? new BigDecimal(customer.getGOC_PHAI_TRA().toString()) : BigDecimal.ZERO).replace("₫", "").replace("₫", "").trim()).append("</td>\n")
+                        .append("    <td>").append(currencyFormatter.format(customer.getLAI_PHAI_TRA() != null ? new BigDecimal(customer.getLAI_PHAI_TRA().toString()) : BigDecimal.ZERO).replace("₫", "").replace("₫", "").trim()).append("</td>\n")
+                        .append("    <td>").append(currencyFormatter.format(customer.getTONG_PHAI_TRA() != null ? new BigDecimal(customer.getTONG_PHAI_TRA().toString()) : BigDecimal.ZERO).replace("₫", "").replace("₫", "").trim()).append("</td>\n")
                         .append("</tr>\n");
+
             } else {
                 contentDongKH.append(" <tr>\n")
                         .append("    <td>").append(index++).append("</td>\n")
@@ -282,20 +290,20 @@ public class TemplateService {
         }
         if (component.equals("VAY_QUA_HAN")) {
             contentSumKH.append(" <tr>\n")
-                    .append("    <td colspan=\"9\" style=\"text-align:right;\">Tổng cộng</td>\n")
-                    .append("    <td>").append(currencyFormatter.format(sumSoTienVay)).append("</td>\n")
-                    .append("    <td>").append(currencyFormatter.format(sumDuNoGoc)).append("</td>\n")
-                    .append("    <td>").append(currencyFormatter.format(sumSoTienGocPhaiTra)).append("</td>\n")
-                    .append("    <td>").append(currencyFormatter.format(sumSoTienLaiPhaiTra)).append("</td>\n")
-                    .append("    <td>").append(currencyFormatter.format(sumTongSoTienPhaiTra)).append("</td>\n")
+                    .append("    <td colspan=\"11\" style=\"text-align:right;\">Tổng cộng</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumSoTienVay).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumDuNoGoc).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumSoTienGocPhaiTra).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumSoTienLaiPhaiTra).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumTongSoTienPhaiTra).replace("₫", "")).append("</td>\n")
                     .append("</tr>");
         } else {
             contentSumKH.append(" <tr>\n")
-                    .append("    <td colspan=\"8\" style=\"text-align:right;\">Tổng cộng</td>\n")
-                    .append("    <td>").append(currencyFormatter.format(sumDuNoGoc)).append("</td>\n")
-                    .append("    <td>").append(currencyFormatter.format(sumSoTienGocPhaiTra)).append("</td>\n")
-                    .append("    <td>").append(currencyFormatter.format(sumSoTienLaiPhaiTra)).append("</td>\n")
-                    .append("    <td>").append(currencyFormatter.format(sumTongSoTienPhaiTra)).append("</td>\n")
+                    .append("    <td colspan=\"11\" style=\"text-align:right;\">Tổng cộng</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumDuNoGoc).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumSoTienGocPhaiTra).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumSoTienLaiPhaiTra).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumTongSoTienPhaiTra).replace("₫", "")).append("</td>\n")
                     .append("</tr>");
 
         }

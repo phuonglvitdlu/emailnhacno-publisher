@@ -22,7 +22,10 @@ public interface NhacNoVayRepository extends JpaRepository<NhacNoVayEntity, Stri
 
 
     @Query(
-            value = "SELECT NV_EMAIL FROM V_EMAIL_NHAC_NO_DS_NV@DBLINK_QLNSTL WHERE CD_MA IN ('CV1056','CV1091','CV2058','CV2098','QL2009','QL1009','QL1047','CV3023') AND CD_MA NOT IN ('CV3019','CV3016','CV3006','CV3004') AND SUBSTR(DV_MA,1,3)=:branch",
+            value = "SELECT NV_EMAIL FROM  V_EMAIL_NHAC_NO_DS_NV@DBLINK_QLNSTL\n" +
+                    " WHERE CD_MA IN ('CV1056','CV1091','CV2058','CV2098','QL2009','QL1009','QL1047','CV3023',\n" +
+                    "'CV3019','CV3016','CV3006','CV3004')\n" +
+                    "and substr(dv_ma,1, 3)=:branch",
             nativeQuery = true
     )
     List<String> getListCBBByBranch(@Param("branch") String branch);

@@ -20,6 +20,9 @@ public class NhacNoVayEntity {
     private String CURRENCY;
     private String CUSTOMER_NO;
     private String TEN_KHACH_HANG;
+
+    private String RM_PHUTRACH;
+
     private String NGAY_VAY;
     private BigDecimal SO_TIEN_VAY;
     private BigDecimal DU_NO_GOC_HIENTAI;
@@ -53,6 +56,14 @@ public class NhacNoVayEntity {
         this.TAIKHOAN_TRICH_NO = TAIKHOAN_TRICH_NO;
     }
 
+
+    public String getRM_PHUTRACH() {
+        return RM_PHUTRACH;
+    }
+
+    public void setRM_PHUTRACH(String RM_PHUTRACH) {
+        this.RM_PHUTRACH = RM_PHUTRACH;
+    }
 
     public BigDecimal getTONG_PHAI_TRA() {
         return TONG_PHAI_TRA;

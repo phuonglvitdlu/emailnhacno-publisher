@@ -4,29 +4,23 @@ import org.com.vab.service.ProducerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.stereotype.Service;
 import vab.com.vn.emailnhacno.EmailnhacnoApplication;
 import vab.com.vn.emailnhacno.entity.*;
 import vab.com.vn.emailnhacno.repository.*;
-import vab.com.vn.emailnhacno.service.SenderService;
 import vab.com.vn.emailnhacno.service.TemplateService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class VayDH {
-    private static final Logger LOGGER = LoggerFactory.getLogger(VayDH.class);
+public class ThauChiQHService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(VayDHService.class);
 
     @Autowired
     private ProducerService producerService;
-
-    @Autowired
-    private SenderService senderService;
 
     @Autowired
     private KhachHangRepository khachHangRepo;
@@ -37,8 +31,6 @@ public class VayDH {
     @Autowired
     private NhacNoVayRepository nhacNoVayRepository;
 
-    @Autowired
-    private DuLieuVayRepository duLieuVayRepository;
 
     @Autowired
     private MailHistoryRepository mailHistoryRepo;
@@ -46,17 +38,12 @@ public class VayDH {
     @Autowired
     private TemplateService templateService;
 
-    @Autowired
-    private MailProperties mailProperties;
-
-    @Autowired
-    private NhanVienRepository nhanVienRepo;
 
     public void executeService(String reportDate) {
-        LOGGER.info("Start processing emails for date: {}", reportDate);
-        String component = "VAY_DEN_HAN";
+        LOGGER.info("Start processing THAUCHIQH CB emails for date: {}", reportDate);
+        String component = "THAUCHIQH";
 
-        List<NhacNoVayEntity> nhacNoVayList = nhacNoVayRepository.getDataByComponent(component, reportDate);
+        List<NhacNoVayEntity> nhacNoVayList = nhacNoVayRepository.getDataByComponent("OD_QUA_HAN", reportDate);
 
         Map<String, List<NhacNoVayEntity>> branchToEntityList = nhacNoVayList.stream()
                 .collect(Collectors.groupingBy(NhacNoVayEntity::getACCOUNT_BRANCH));
@@ -77,7 +64,7 @@ public class VayDH {
             email.setToEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
             email.setToCC(listCBB.toArray(new String[0]));
             email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
-            email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "OD_DEN_HAN"));
+            email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "OD_QUA_HAN"));
 
             MailHistoryKey mailHistoryKey = new MailHistoryKey();
             mailHistoryKey.setRUN_DATE(reportDate);

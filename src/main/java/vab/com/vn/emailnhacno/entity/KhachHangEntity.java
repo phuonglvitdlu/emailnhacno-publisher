@@ -18,6 +18,15 @@ public class KhachHangEntity implements Serializable {
     @Column(name = "ACCOUNT_NUMBER")
     private String ACCOUNT_NUMBER;
 
+    public String getACCOUNT_BRANCH() {
+        return ACCOUNT_BRANCH;
+    }
+
+    public void setACCOUNT_BRANCH(String ACCOUNT_BRANCH) {
+        this.ACCOUNT_BRANCH = ACCOUNT_BRANCH;
+    }
+
+    private String ACCOUNT_BRANCH;
     private String CUSTOMER_NO;
     private String CURRENCY;
     private String COMPONENT;
