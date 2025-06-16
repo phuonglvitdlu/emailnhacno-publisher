@@ -270,7 +270,9 @@ public class TemplateService {
                         .append("    <td>").append(index++).append("</td>\n")
                         .append("    <td>").append(customer.getSO_HOP_DONG_VAY() == null ? "" : customer.getSO_HOP_DONG_VAY()).append("</td>\n")
                         .append("    <td>").append(customer.getACCOUNT_NUMBER() == null ? "" : customer.getACCOUNT_NUMBER()).append("</td>\n")
+                        .append("    <td>").append(customer.getCUSTOMER_NO() == null ? "" : customer.getCUSTOMER_NO()).append("</td>\n")
                         .append("    <td>").append(customer.getTEN_KHACH_HANG() == null ? "" : customer.getTEN_KHACH_HANG()).append("</td>\n")
+                        .append("    <td>").append(customer.getRM_PHUTRACH() == null ? "" : customer.getRM_PHUTRACH()).append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_VAY() != null ? updateDate(formatDate(customer.getNGAY_VAY()), 0) : "").append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_DEN_HAN() != null ? updateDate(formatDate(customer.getNGAY_DEN_HAN()), 0) : "").append("</td>\n")
 //                     .append("    <td>").append(customer.getSO_TIEN_VAY() != null ? currencyFormatter.format(new BigDecimal(customer.getSO_TIEN_VAY().toString())) : currencyFormatter.format(BigDecimal.ZERO)).append("</td>\n")
@@ -297,7 +299,7 @@ public class TemplateService {
                     .append("    <td>").append(currencyFormatter.format(sumSoTienLaiPhaiTra).replace("₫", "")).append("</td>\n")
                     .append("    <td>").append(currencyFormatter.format(sumTongSoTienPhaiTra).replace("₫", "")).append("</td>\n")
                     .append("</tr>");
-        } else {
+        } else if (component.equals("OD_HET_HAN")) {
             contentSumKH.append(" <tr>\n")
                     .append("    <td colspan=\"11\" style=\"text-align:right;\">Tổng cộng</td>\n")
                     .append("    <td>").append(currencyFormatter.format(sumDuNoGoc).replace("₫", "")).append("</td>\n")
@@ -306,6 +308,14 @@ public class TemplateService {
                     .append("    <td>").append(currencyFormatter.format(sumTongSoTienPhaiTra).replace("₫", "")).append("</td>\n")
                     .append("</tr>");
 
+        } else {
+            contentSumKH.append(" <tr>\n")
+                    .append("    <td colspan=\"9\" style=\"text-align:right;\">Tổng cộng</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumDuNoGoc).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumSoTienGocPhaiTra).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumSoTienLaiPhaiTra).replace("₫", "")).append("</td>\n")
+                    .append("    <td>").append(currencyFormatter.format(sumTongSoTienPhaiTra).replace("₫", "")).append("</td>\n")
+                    .append("</tr>");
         }
 
 
