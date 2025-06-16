@@ -213,6 +213,7 @@ public class TemplateService {
                         .append("    <td>").append(customer.getACCOUNT_NUMBER() == null ? "" : customer.getACCOUNT_NUMBER()).append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_VAY() != null ? updateDate(formatDate(customer.getNGAY_VAY()), 0) : "").append("</td>\n")
                         .append("    <td>").append(customer.getTEN_KHACH_HANG() == null ? "" : customer.getTEN_KHACH_HANG()).append("</td>\n")
+                        .append("    <td>").append(customer.getCUSTOMER_NO()== null ? "" : customer.getCUSTOMER_NO()).append("</td>\n")
                         .append("    <td>").append(customer.getRM_PHUTRACH() == null ? "" : customer.getRM_PHUTRACH()).append("</td>\n")
                         .append("    <td>").append(customer.getNGAY_DEN_HAN() != null ? updateDate(formatDate(customer.getNGAY_DEN_HAN()), 0) : "").append("</td>\n")
                         .append("    <td>").append(customer.getTAIKHOAN_TRICH_NO() == null ? "" : customer.getTAIKHOAN_TRICH_NO()).append("</td>\n").append("</td>\n")

@@ -215,10 +215,10 @@ public class JobService {
     ThauChiQHService thauChiQHService;
 
     private void processCBBList(String reportDatet) {
-//        vayQHService.executeService(reportDatet);
-//        vayDHService.executeService(reportDatet);
+        vayQHService.executeService(reportDatet);
+        vayDHService.executeService(reportDatet);
         thauChiHHService.executeService(reportDatet);
-//        thauChiQHService.executeService(reportDatet);
+        thauChiQHService.executeService(reportDatet);
 
     }
 }
