@@ -12,7 +12,7 @@ public interface NhacNoVayRepository extends JpaRepository<NhacNoVayEntity, Stri
     @Query(value = "SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM Nhac_No_Vay n WHERE n.COMPONENT = :component AND n.RUN_DATE = :runDate) sub WHERE sub.row_num = 1", nativeQuery = true)
     List<NhacNoVayEntity> getDataByComponent(@Param("component") String component, @Param("runDate") String runDate);
 
-    @Query(value = "select n from NhacNoVayEntity n  WHERE n.COMPONENT = :component and n.CUSTOMER_NO = :customer_no and n.CUSTOMER_NO = :customer_no and n.RUN_DATE =:RUN_DATE\n")
+    @Query(value = "select n from NhacNoVayEntity n  WHERE n.COMPONENT = :component and n.CUSTOMER_NO = :customer_no and n.RUN_DATE =:RUN_DATE\n")
     List<NhacNoVayEntity> getDataByComponentAndCustomerNo(@Param("component") String component, @Param("customer_no") String customer_no, @Param("RUN_DATE") String runDate);
 
     @Query("SELECT T.MA_CB_BAN\n" +

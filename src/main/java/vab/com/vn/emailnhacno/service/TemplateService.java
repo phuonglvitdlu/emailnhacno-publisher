@@ -293,7 +293,7 @@ public class TemplateService {
         }
         if (component.equals("VAY_QUA_HAN")) {
             contentSumKH.append(" <tr>\n")
-                    .append("    <td colspan=\"11\" style=\"text-align:right;\">Tổng cộng</td>\n")
+                    .append("    <td colspan=\"12\" style=\"text-align:right;\">Tổng cộng</td>\n")
                     .append("    <td>").append(currencyFormatter.format(sumSoTienVay).replace("₫", "")).append("</td>\n")
                     .append("    <td>").append(currencyFormatter.format(sumDuNoGoc).replace("₫", "")).append("</td>\n")
                     .append("    <td>").append(currencyFormatter.format(sumSoTienGocPhaiTra).replace("₫", "")).append("</td>\n")
