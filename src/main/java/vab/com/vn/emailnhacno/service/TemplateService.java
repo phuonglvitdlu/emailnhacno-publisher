@@ -249,7 +249,7 @@ public class TemplateService {
                         .append("</td>\n")
                         .append("    <td>").append(currencyFormatter.format(customer.getLAI_PHAI_TRA() != null ? new BigDecimal(customer.getLAI_PHAI_TRA().toString().replace("₫", "")) : BigDecimal.ZERO).replace("₫", "")).append("</td>\n")
                         .append("</tr>\n");
-            } else if (component.equals("OD_DEN_HAN")) {
+            } else if (component.equals("OD_DEN_HAN") || component.equals("VAY_DEN_HAN") ) {
                 contentDongKH.append(" <tr>\n")
                         .append("    <td>").append(index++).append("</td>\n")
                         .append("    <td>").append(customer.getSO_HOP_DONG_VAY() == null ? "" : customer.getSO_HOP_DONG_VAY()).append("</td>\n")
@@ -266,29 +266,6 @@ public class TemplateService {
                         .append("    <td>").append(currencyFormatter.format(customer.getTONG_PHAI_TRA() != null ? new BigDecimal(customer.getTONG_PHAI_TRA().toString()) : BigDecimal.ZERO).replace("₫", "").replace("₫", "").trim()).append("</td>\n")
                         .append("</tr>\n");
 
-            } else {
-                contentDongKH.append(" <tr>\n")
-                        .append("    <td>").append(index++).append("</td>\n")
-                        .append("    <td>").append(customer.getSO_HOP_DONG_VAY() == null ? "" : customer.getSO_HOP_DONG_VAY()).append("</td>\n")
-                        .append("    <td>").append(customer.getACCOUNT_NUMBER() == null ? "" : customer.getACCOUNT_NUMBER()).append("</td>\n")
-                        .append("    <td>").append(customer.getCUSTOMER_NO() == null ? "" : customer.getCUSTOMER_NO()).append("</td>\n")
-                        .append("    <td>").append(customer.getTEN_KHACH_HANG() == null ? "" : customer.getTEN_KHACH_HANG()).append("</td>\n")
-                        .append("    <td>").append(customer.getRM_PHUTRACH() == null ? "" : customer.getRM_PHUTRACH()).append("</td>\n")
-                        .append("    <td>").append(customer.getNGAY_VAY() != null ? updateDate(formatDate(customer.getNGAY_VAY()), 0) : "").append("</td>\n")
-                        .append("    <td>").append(customer.getNGAY_DEN_HAN() != null ? updateDate(formatDate(customer.getNGAY_DEN_HAN()), 0) : "").append("</td>\n")
-//                     .append("    <td>").append(customer.getSO_TIEN_VAY() != null ? currencyFormatter.format(new BigDecimal(customer.getSO_TIEN_VAY().toString())) : currencyFormatter.format(BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(customer.getNGAY_DEN_HAN_THANHTOAN() != null ? updateDate(formatDate(customer.getNGAY_DEN_HAN_THANHTOAN()), 0) : "").append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getDU_NO_GOC_HIENTAI() != null ? new BigDecimal(customer.getDU_NO_GOC_HIENTAI().toString()) : BigDecimal.ZERO)).append("</td>\n")
-//             	     .append("    <td>").append(currencyFormatter.format(customer.getGOC_PHAI_TRA() != null ? new BigDecimal(customer.getGOC_PHAI_TRA().toString()) : BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>").append(currencyFormatter.format(customer.getLAI_PHAI_TRA() != null ? new BigDecimal(customer.getLAI_PHAI_TRA().toString()) : BigDecimal.ZERO)).append("</td>\n")
-                        .append("    <td>")
-                        .append(
-                                currencyFormatter.format(
-                                        (customer.getTONG_PHAI_TRA())
-                                )
-                        )
-                        .append("</td>\n")
-                        .append("</tr>\n");
             }
         }
         if (component.equals("VAY_QUA_HAN")) {

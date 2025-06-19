@@ -41,7 +41,7 @@ public class VayDHService {
 
     public void executeService(String reportDate) {
         LOGGER.info("Start processing VAY_DEN_HAN CB emails for date: {}", reportDate);
-
+//"OD_DEN_HAN",
         List<String> components = Arrays.asList("OD_DEN_HAN", "VAY_DEN_HAN");
 
         for (String component : components) {
