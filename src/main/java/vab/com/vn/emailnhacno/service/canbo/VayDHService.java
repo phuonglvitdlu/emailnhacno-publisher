@@ -10,6 +10,7 @@ import vab.com.vn.emailnhacno.entity.*;
 import vab.com.vn.emailnhacno.repository.*;
 import vab.com.vn.emailnhacno.service.TemplateService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,20 +39,25 @@ public class VayDHService {
     private TemplateService templateService;
 
 
-
     public void executeService(String reportDate) {
         LOGGER.info("Start processing VAY_DEN_HAN CB emails for date: {}", reportDate);
-        String component = "OD_DEN_HAN";
 
-        List<NhacNoVayEntity> nhacNoVayList = nhacNoVayRepository.getDataByComponent(component, reportDate);
+        List<String> components = Arrays.asList("OD_DEN_HAN", "VAY_DEN_HAN");
 
-        Map<String, List<NhacNoVayEntity>> branchToEntityList = nhacNoVayList.stream()
-                .collect(Collectors.groupingBy(NhacNoVayEntity::getACCOUNT_BRANCH));
-        Optional<MailTemplate> templateCBOpt = mailTemplateRepo.findById("VAY_DEN_HAN" + "_CBQL");
-        processCBBList(branchToEntityList, component, reportDate, templateCBOpt);
+        for (String component : components) {
+            List<NhacNoVayEntity> nhacNoVayList = nhacNoVayRepository.getDataByComponent(component, reportDate);
+
+            Map<String, List<NhacNoVayEntity>> branchToEntityList = nhacNoVayList.stream()
+                    .collect(Collectors.groupingBy(NhacNoVayEntity::getACCOUNT_BRANCH));
+
+            Optional<MailTemplate> templateCBOpt = mailTemplateRepo.findById("VAY_DEN_HAN" + "_CBQL");
+
+            processCBBList(branchToEntityList, component, reportDate, templateCBOpt);
+        }
 
         LOGGER.info("Hoàn thành xử lý email cho ngày: {}", reportDate);
     }
+
 
     private void processCBBList(Map<String, List<NhacNoVayEntity>> branchToEntityList, String component, String reportDate, Optional<MailTemplate> templateCBOpt) {
         EmailEntity email = new EmailEntity();
