@@ -58,12 +58,12 @@ public class JobService {
         LOGGER.info("Start processing emails for date: {}", reportDate);
         processCBBList(reportDate);
         // Lấy danh sách template
-        List<MailTemplate> templates = mailTemplateRepo.findAll();
-        if (templates.isEmpty()) {
-            LOGGER.warn("Không có template nào được cấu hình.");
-            return;
-        }
-
+//        List<MailTemplate> templates = mailTemplateRepo.findAll();
+//        if (templates.isEmpty()) {
+//            LOGGER.warn("Không có template nào được cấu hình.");
+//            return;
+//        }
+//
 //        String[] components = {"OD_DEN_HAN", "VAY_DEN_HAN", "OD_HET_HAN", "OD_QUA_HAN", "VAY_QUA_HAN"};
 //
 //        for (String component : components) {
@@ -215,10 +215,10 @@ public class JobService {
     ThauChiQHService thauChiQHService;
 
     private void processCBBList(String reportDatet) {
-//        vayQHService.executeService(reportDatet);
+        vayQHService.executeService(reportDatet);
         vayDHService.executeService(reportDatet);
-//        thauChiHHService.executeService(reportDatet);
-//        thauChiQHService.executeService(reportDatet);
+        thauChiHHService.executeService(reportDatet);
+        thauChiQHService.executeService(reportDatet);
 
     }
 }
