@@ -14,7 +14,7 @@ public class TemplateService {
         if (kh.getLoaiKh().equals("I")) {
             return l_template.get().getCONTENT()
                     .replace("#hoten@", kh.getTenKh())
-                    .replace("#sogiayto@", kh.getSoTk())
+                    .replace("#sogiayto@", kh.getSoGttt())
                     .replace("#sotaikhoan@", kh.getSoTk())
                     .replace("#ngayhethan@", kh.getNgayHetHan())
                     .replace("#email@", kh.getEmail());

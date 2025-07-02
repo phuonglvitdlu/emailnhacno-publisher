@@ -19,17 +19,21 @@ public class JobService1 {
 
     @Autowired
     private ContactCenterRepository repository;
+
     @Autowired
     private ProducerService producerService;
+
     @Autowired
     private MailTemplateRepository mailTemplateRepo;
+
     @Autowired
     private MailHistoryRepository mailHistoryRepo;
+
     @Autowired
     private TemplateService templateService;
+
     @Autowired
     private MailProperties mailProperties;
-
 
     public void executeService(String reportDate) {
         LOGGER.info("CONTACT-CENTER Start processing emails for date: {}", reportDate);
@@ -67,27 +71,41 @@ public class JobService1 {
                     return;
                 }
 
-                String emailNdd;
+                String emailNdd = null;
+                String emailKh = null;
+
                 try {
                     emailNdd = kh.getEmailNdd();
+                    emailKh = kh.getEmail();
                 } catch (Exception e) {
-                    LOGGER.error("Lỗi khi lấy EmailNdd của KH {}: {}", kh.getMaKh(), e.getMessage());
+                    LOGGER.error("Lỗi khi lấy email của KH {}: {}", kh.getMaKh(), e.getMessage());
                     return;
                 }
 
-                if (emailNdd == null || emailNdd.trim().isEmpty()) {
-                    LOGGER.warn("Khách hàng không có email: {}", kh.getMaKh());
+                if ((emailNdd == null || emailNdd.trim().isEmpty()) &&
+                        (emailKh == null || emailKh.trim().isEmpty())) {
+                    LOGGER.warn("Khách hàng {} không có cả email chính và emailNdd → không gửi", kh.getMaKh());
                     return;
                 }
 
                 try {
                     EmailEntity email = new EmailEntity();
-//                    email.setFromEmail(mailProperties.getUsername());
                     email.setFromEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
                     email.setRunDate(reportDate);
-                    email.setToEmail(EmailnhacnoApplication.getProperty("spring.mail.username")); // hoặc kh.getEMAIL_KH()
-//                    email.setToCC(new String[]{emailNdd}
-                    email.setToCC(new String[]{EmailnhacnoApplication.getProperty("spring.mail.username")});
+
+                    // Gán ToEmail
+                    if (emailKh != null && !emailKh.trim().isEmpty()) {
+                        email.setToEmail(emailKh);
+                    } else {
+                        email.setToEmail(emailNdd);
+                        LOGGER.warn("Khách hàng {} không có email chính, dùng emailNdd để gửi", kh.getMaKh());
+                    }
+
+                    // Gán CC nếu có và khác với To
+                    if (emailNdd != null && !emailNdd.trim().isEmpty() &&
+                            !emailNdd.equalsIgnoreCase(email.getToEmail())) {
+                        email.setToCC(new String[]{emailNdd});
+                    }
 
                     email.setSubject(template.getTITLE());
                     email.setBody(templateService.getTemplateContactCenter(kh, templateOpt));
@@ -95,6 +113,7 @@ public class JobService1 {
                     email.setComponent(component);
                     email.setName(kh.getTenKh());
                     email.setTieuDe(template.getTITLE());
+                    email.setToCC(new String[]{EmailnhacnoApplication.getProperty("spring.mail.username")});
 
                     MailHistoryKey mailHistoryKey = new MailHistoryKey();
                     mailHistoryKey.setRUN_DATE(reportDate);
