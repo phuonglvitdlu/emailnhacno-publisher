@@ -9,10 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-/**
- *
- * @author LAMNTP
- */
+
 @Embeddable
 public class MailHistoryKey implements Serializable {
 

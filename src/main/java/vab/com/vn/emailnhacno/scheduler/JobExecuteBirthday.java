@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import vab.com.vn.emailnhacno.service.JobService1;
+import vab.com.vn.emailnhacno.service.JobService;
 
 @Component
 public class JobExecuteBirthday implements Job {
@@ -15,7 +15,7 @@ public class JobExecuteBirthday implements Job {
     Logger logger = LoggerFactory.getLogger("JobExecute");
 
     @Autowired
-    private JobService1 jobService;
+    private JobService jobService;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
 

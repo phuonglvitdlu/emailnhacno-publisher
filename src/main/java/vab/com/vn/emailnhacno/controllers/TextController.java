@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vab.com.vn.emailnhacno.service.CacheService;
-import vab.com.vn.emailnhacno.service.JobService1;
+import vab.com.vn.emailnhacno.service.JobService;
 
 @RestController
 public class TextController {
     @Autowired
-    JobService1 jobService1;
+    JobService jobService1;
 
 //    @Autowired
 //    THAUCHIQH jobService;

@@ -4,7 +4,6 @@ import org.com.vab.service.ProducerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.stereotype.Service;
 import vab.com.vn.emailnhacno.EmailnhacnoApplication;
 import vab.com.vn.emailnhacno.entity.*;
@@ -14,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class JobService1 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JobService1.class);
+public class JobService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobService.class);
 
     @Autowired
     private ContactCenterRepository repository;
@@ -31,9 +30,6 @@ public class JobService1 {
 
     @Autowired
     private TemplateService templateService;
-
-    @Autowired
-    private MailProperties mailProperties;
 
     public void executeService(String reportDate) {
         LOGGER.info("CONTACT-CENTER Start processing emails for date: {}", reportDate);
@@ -112,6 +108,20 @@ public class JobService1 {
                     email.setCustomerNo(kh.getMaKh());
                     email.setComponent(component);
                     email.setName(kh.getTenKh());
+                    email.setDonvi(kh.getDonVi());
+
+                    if (kh.getLoaiKh().equals("I")) {
+                        email.setNgayhethl(kh.getNgayHetHan());
+                        email.setSoGTTT(kh.getSoGttt());
+                        email.setLoaiKH(kh.getLoaiKh());
+                    }else {
+                        email.setNgayhethl(kh.getNgayHetHanGtttNdd());
+                        email.setSoGTTT(kh.getSoGtttNdd());
+                        email.setLoaiKH(kh.getLoaiKh());
+                    }
+
+
+
                     email.setTieuDe(template.getTITLE());
                     email.setToCC(new String[]{EmailnhacnoApplication.getProperty("spring.mail.username")});
 
@@ -120,6 +130,7 @@ public class JobService1 {
                     mailHistoryKey.setMA_NV(kh.getMaKh());
                     mailHistoryKey.setCOMPONENT(kh.getMaKh());
                     mailHistoryKey.setTIEU_DE(template.getTITLE());
+
 
                     if (!mailHistoryRepo.existsById(mailHistoryKey)) {
                         producerService.sendEmail(email);
