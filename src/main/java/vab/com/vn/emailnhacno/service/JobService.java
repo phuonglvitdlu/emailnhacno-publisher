@@ -67,22 +67,15 @@ public class JobService {
                     return;
                 }
 
-                String emailNdd = null;
                 String emailKh = null;
 
                 try {
-                    emailNdd = kh.getEmailNdd();
                     emailKh = kh.getEmail();
                 } catch (Exception e) {
                     LOGGER.error("Lỗi khi lấy email của KH {}: {}", kh.getMaKh(), e.getMessage());
                     return;
                 }
 
-                if ((emailNdd == null || emailNdd.trim().isEmpty()) &&
-                        (emailKh == null || emailKh.trim().isEmpty())) {
-                    LOGGER.warn("Khách hàng {} không có cả email chính và emailNdd → không gửi", kh.getMaKh());
-                    return;
-                }
 
                 try {
                     EmailEntity email = new EmailEntity();
@@ -90,18 +83,15 @@ public class JobService {
                     email.setRunDate(reportDate);
 
                     // Gán ToEmail
-                    if (emailKh != null && !emailKh.trim().isEmpty()) {
+//                    if (kh.getLoaiKh().equals("I")) {
                         email.setToEmail(emailKh);
-                    } else {
-                        email.setToEmail(emailNdd);
-                        LOGGER.warn("Khách hàng {} không có email chính, dùng emailNdd để gửi", kh.getMaKh());
-                    }
+//                    }
 
                     // Gán CC nếu có và khác với To
-                    if (emailNdd != null && !emailNdd.trim().isEmpty() &&
-                            !emailNdd.equalsIgnoreCase(email.getToEmail())) {
-                        email.setToCC(new String[]{emailNdd});
-                    }
+//                    if (emailNdd != null && !emailNdd.trim().isEmpty() &&
+//                            !emailNdd.equalsIgnoreCase(email.getToEmail())) {
+//                        email.setToCC(new String[]{emailNdd});
+//                    }
 
                     email.setSubject(template.getTITLE());
                     email.setBody(templateService.getTemplateContactCenter(kh, templateOpt));
@@ -114,12 +104,11 @@ public class JobService {
                         email.setNgayhethl(kh.getNgayHetHan());
                         email.setSoGTTT(kh.getSoGttt());
                         email.setLoaiKH(kh.getLoaiKh());
-                    }else {
+                    } else {
                         email.setNgayhethl(kh.getNgayHetHanGtttNdd());
                         email.setSoGTTT(kh.getSoGtttNdd());
                         email.setLoaiKH(kh.getLoaiKh());
                     }
-
 
 
                     email.setTieuDe(template.getTITLE());
@@ -130,7 +119,7 @@ public class JobService {
                     mailHistoryKey.setMA_NV(kh.getMaKh());
                     mailHistoryKey.setCOMPONENT(kh.getMaKh());
                     mailHistoryKey.setTIEU_DE(template.getTITLE());
-
+//                    mailHistoryKey.setEMAIL(kh.getEmail());
 
                     if (!mailHistoryRepo.existsById(mailHistoryKey)) {
                         producerService.sendEmail(email);

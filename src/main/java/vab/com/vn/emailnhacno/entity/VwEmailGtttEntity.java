@@ -47,8 +47,7 @@ public class VwEmailGtttEntity {
     @Column(name = "NGAY_HET_HAN_GTTT_NDD")
     private String ngayHetHanGtttNdd;
 
-    @Column(name = "EMAIL_NDD")
-    private String emailNdd;
+
 
     public String getEmail() {
         return email;
@@ -146,12 +145,6 @@ public class VwEmailGtttEntity {
         this.ngayHetHanGtttNdd = ngayHetHanGtttNdd;
     }
 
-    public String getEmailNdd() {
-        return emailNdd;
-    }
-
-    public void setEmailNdd(String emailNdd) {
-        this.emailNdd = emailNdd;
-    }
+ 
 
 }

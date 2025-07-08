@@ -25,7 +25,7 @@ public class TemplateService {
                 .replace("#sogiayto@", kh.getSoGtttNdd())
                 .replace("#sotaikhoan@", kh.getSoGtttNdd())
                 .replace("#ngayhethan@", kh.getNgayHetHanGtttNdd())
-                .replace("#email@", kh.getEmailNdd());
+                .replace("#email@", kh.getEmail());
 
     }
 

@@ -7,10 +7,7 @@ package vab.com.vn.emailnhacno.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -25,6 +22,7 @@ public class MailHistory implements Serializable {
     private MailHistoryKey PK;
     private String HO_TEN;
     private LocalDateTime THOI_GIAN;
+    @Column(name = "EMAIL", insertable = false, updatable = false)
     private String EMAIL;
     private String TRANG_THAI;
 

@@ -25,6 +25,17 @@ public class MailHistoryKey implements Serializable {
     @Column(name = "RUN_DATE")
     private String RUN_DATE;
 
+    @Column(name = "EMAIL")
+    private String EMAIL;
+
+    public String getEMAIL() {
+        return EMAIL;
+    }
+
+    public void setEMAIL(String EMAIL) {
+        this.EMAIL = EMAIL;
+    }
+
     public String getRUN_DATE() {
         return RUN_DATE;
     }
@@ -32,6 +43,7 @@ public class MailHistoryKey implements Serializable {
     public void setRUN_DATE(String RUN_DATE) {
         this.RUN_DATE = RUN_DATE;
     }
+
 
 
     public String getMA_NV() {
