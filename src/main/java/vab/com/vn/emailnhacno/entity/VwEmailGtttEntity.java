@@ -47,7 +47,30 @@ public class VwEmailGtttEntity {
     @Column(name = "NGAY_HET_HAN_GTTT_NDD")
     private String ngayHetHanGtttNdd;
 
+    @Column(name = "NGAY_CAP")
+    private String NGAY_CAP;
 
+
+
+    @Column(name = "LOAI_GTTT_NDD")
+    private String LOAI_GTTT_NDD;
+
+    public String getNGAY_CAP() {
+        return NGAY_CAP;
+    }
+
+    public void setNGAY_CAP(String NGAY_CAP) {
+        this.NGAY_CAP = NGAY_CAP;
+    }
+
+
+    public String getLOAI_GTTT_NDD() {
+        return LOAI_GTTT_NDD;
+    }
+
+    public void setLOAI_GTTT_NDD(String LOAI_GTTT_NDD) {
+        this.LOAI_GTTT_NDD = LOAI_GTTT_NDD;
+    }
 
     public String getEmail() {
         return email;
@@ -145,6 +168,5 @@ public class VwEmailGtttEntity {
         this.ngayHetHanGtttNdd = ngayHetHanGtttNdd;
     }
 
- 
 
 }

@@ -23,7 +23,7 @@ public class TemplateService {
         return l_template.get().getCONTENT()
                 .replace("#hoten@", kh.getTenNdd())
                 .replace("#sogiayto@", kh.getSoGtttNdd())
-                .replace("#sotaikhoan@", kh.getSoGtttNdd())
+                .replace("#sotaikhoan@", kh.getSoTk())
                 .replace("#ngayhethan@", kh.getNgayHetHanGtttNdd())
                 .replace("#email@", kh.getEmail());
 

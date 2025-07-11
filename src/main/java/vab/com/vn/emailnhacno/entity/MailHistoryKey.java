@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 
+
 @Embeddable
 public class MailHistoryKey implements Serializable {
 

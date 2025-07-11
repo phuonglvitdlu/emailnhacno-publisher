@@ -17,13 +17,12 @@ import javax.persistence.*;
 @Table(name = "N_MAIL_HISTORY")
 public class MailHistory implements Serializable {
 
-    @Id
     @EmbeddedId
     private MailHistoryKey PK;
     private String HO_TEN;
     private LocalDateTime THOI_GIAN;
-    @Column(name = "EMAIL", insertable = false, updatable = false)
-    private String EMAIL;
+//    @Column(name = "EMAIL", insertable = false, updatable = false)
+//    private String EMAIL;
     private String TRANG_THAI;
 
     /**
@@ -54,19 +53,19 @@ public class MailHistory implements Serializable {
         this.THOI_GIAN = THOI_GIAN;
     }
 
-    /**
-     * @return the EMAIL
-     */
-    public String getEMAIL() {
-        return EMAIL;
-    }
-
-    /**
-     * @param EMAIL the EMAIL to set
-     */
-    public void setEMAIL(String EMAIL) {
-        this.EMAIL = EMAIL;
-    }
+//    /**
+//     * @return the EMAIL
+//     */
+//    public String getEMAIL() {
+//        return EMAIL;
+//    }
+//
+//    /**
+//     * @param EMAIL the EMAIL to set
+//     */
+//    public void setEMAIL(String EMAIL) {
+//        this.EMAIL = EMAIL;
+//    }
 
     /**
      * @return the TRANG_THAI

@@ -84,7 +84,7 @@ public class JobService {
 
                     // Gán ToEmail
 //                    if (kh.getLoaiKh().equals("I")) {
-                        email.setToEmail(emailKh);
+                    email.setToEmail(emailKh);
 //                    }
 
                     // Gán CC nếu có và khác với To
@@ -99,6 +99,10 @@ public class JobService {
                     email.setComponent(component);
                     email.setName(kh.getTenKh());
                     email.setDonvi(kh.getDonVi());
+                    email.setLoaiKH(kh.getLoaiKh());
+                    email.setNgaycap(kh.getNGAY_CAP());
+                    email.setCifndd(kh.getCifNdd());
+                    email.setLoaigttndd(kh.getLOAI_GTTT_NDD());
 
                     if (kh.getLoaiKh().equals("I")) {
                         email.setNgayhethl(kh.getNgayHetHan());
@@ -117,9 +121,9 @@ public class JobService {
                     MailHistoryKey mailHistoryKey = new MailHistoryKey();
                     mailHistoryKey.setRUN_DATE(reportDate);
                     mailHistoryKey.setMA_NV(kh.getMaKh());
-                    mailHistoryKey.setCOMPONENT(kh.getMaKh());
+                    mailHistoryKey.setCOMPONENT("CONTACT_CENTER");
                     mailHistoryKey.setTIEU_DE(template.getTITLE());
-//                    mailHistoryKey.setEMAIL(kh.getEmail());
+                    mailHistoryKey.setEMAIL(kh.getEmail());
 
                     if (!mailHistoryRepo.existsById(mailHistoryKey)) {
                         producerService.sendEmail(email);
