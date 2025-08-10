@@ -79,17 +79,6 @@ public class SpringQrtzScheduler {
         return jobDetailFactory;
     }
 
-    @Bean(name = "jobTwo")
-    public JobDetailFactoryBean jobDetailOne() {
-
-        JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
-        jobDetailFactory.setJobClass(JobExecuteOnboard.class);
-        jobDetailFactory.setName("Qrtz_Job_Detail_Two");
-        jobDetailFactory.setDescription("Invoke Sample Job service...");
-        jobDetailFactory.setDurability(true);
-        return jobDetailFactory;
-    }
-
 
 //    @Bean
 //    @Primary
@@ -129,18 +118,11 @@ public class SpringQrtzScheduler {
         return TriggerBuilder.newTrigger()
                 .withIdentity("triggerOne", "groupOne")
                 .forJob(job)
-                .withSchedule(CronScheduleBuilder.cronSchedule(EmailnhacnoApplication.getProperty("cron-birthday")))  // Cron expression for jobOne
+                .withSchedule(CronScheduleBuilder.cronSchedule(EmailnhacnoApplication.getProperty("cron-sendmail")))  // Cron expression for jobOne
                 .build();
     }
 
-    @Bean
-    public Trigger triggerTwo(@Qualifier("jobTwo") JobDetail job) {
-        return TriggerBuilder.newTrigger()
-                .withIdentity("triggerTwo", "groupTwo")
-                .forJob(job)
-                .withSchedule(CronScheduleBuilder.cronSchedule(EmailnhacnoApplication.getProperty("cron-onboard")))  // Cron expression for jobTwo
-                .build();
-    }
+
 
     @Bean
     @QuartzDataSource

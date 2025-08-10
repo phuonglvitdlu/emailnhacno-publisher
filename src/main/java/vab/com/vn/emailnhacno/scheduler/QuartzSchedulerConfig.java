@@ -18,16 +18,8 @@ public class QuartzSchedulerConfig {
     private JobDetail jobDetailOne;
 
     @Autowired
-    @Qualifier("jobTwo")
-    private JobDetail jobDetailTwo;
-
-    @Autowired
     @Qualifier("triggerOne")
     private Trigger triggerOne;
-
-    @Autowired
-    @Qualifier("triggerTwo")
-    private Trigger triggerTwo;
 
     @PostConstruct
     public void scheduleJobs() throws SchedulerException {
@@ -36,16 +28,8 @@ public class QuartzSchedulerConfig {
         if (scheduler.checkExists(jobKeyOne)) {
             scheduler.deleteJob(jobKeyOne);
         }
-
-        JobKey jobKeyTwo = new JobKey("Qrtz_Job_Detail_Two", "DEFAULT");
-        if (scheduler.checkExists(jobKeyTwo)) {
-            scheduler.deleteJob(jobKeyTwo);
-        }
-
         // Lập kế hoạch jobOne với triggerOne
         scheduler.scheduleJob(jobDetailOne, triggerOne);
 
-        // Lập kế hoạch jobTwo với triggerTwo
-        scheduler.scheduleJob(jobDetailTwo, triggerTwo);
     }
 }
