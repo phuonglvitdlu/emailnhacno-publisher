@@ -94,8 +94,9 @@ public class JobService {
                         return;
                     }
                     email.setRunDate(reportDate);
-//                    email.setToEmail(kh.getEMAIL_KH());
-                    email.setToEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
+                    email.setToEmail(kh.getEMAIL_KH());
+//                    email.setToEmail("phuonglv@vietab
+//                    ank.com.vn");
                     email.setToCC(new String[]{EmailnhacnoApplication.getProperty("spring.mail.username")});
                     email.setSubject(template.getTITLE());
                     email.setBody(templateService.getTemplate(kh, templateOpt, component, 0, reportDate));
@@ -169,7 +170,7 @@ public class JobService {
                         return;
                     }
                     email.setRunDate(reportDate);
-                    email.setToEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
+                    email.setToEmail("phuonglv@vietabank.com.vn");
 //                    email.setToEmail(kh.getCUST_EMAIL());
                     email.setToCC(new String[]{kh.getCUST_EMAIL()});
                     email.setSubject(template.getTITLE());

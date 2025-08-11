@@ -36,7 +36,6 @@ public class VayQHService {
     private TemplateService templateService;
 
 
-
     public void executeService(String reportDate) {
         LOGGER.info("Start processing emails VAY_QUA_HAN CB for date: {}", reportDate);
         String component = "VAY_QUA_HAN";
@@ -60,6 +59,7 @@ public class VayQHService {
             email.setComponent(component);
             email.setCustomerNo(branch);
             email.setToEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
+//            email.setToEmail("phuonglv@vietabank.com.vn");
             email.setToCC(listCBB.toArray(new String[0]));
             email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
             email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "VAY_QUA_HAN"));

@@ -68,6 +68,8 @@ public class VayDHService {
             email.setComponent(component);
             email.setCustomerNo(branch);
             email.setToEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
+//            email.setToEmail("phuonglv@vietabank.com.vn");
+
             email.setToCC(listCBB.toArray(new String[0]));
             email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
             email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, component));
