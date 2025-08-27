@@ -170,8 +170,8 @@ public class JobService {
                         return;
                     }
                     email.setRunDate(reportDate);
-                    email.setToEmail("phuonglv@vietabank.com.vn");
-//                    email.setToEmail(kh.getCUST_EMAIL());
+//                    email.setToEmail("phuonglv@vietabank.com.vn");
+                    email.setToEmail(kh.getCUST_EMAIL());
                     email.setToCC(new String[]{kh.getCUST_EMAIL()});
                     email.setSubject(template.getTITLE());
                     email.setBody(templateService.getTemplate(kh, templateOpt, component, 0, reportDate));
