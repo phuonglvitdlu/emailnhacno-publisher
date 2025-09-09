@@ -101,7 +101,7 @@ public class JobService {
                     email.setToEmail(kh.getEMAIL_KH());
 //                    email.setToEmail("phuonglv@vietab
 //                    ank.com.vn");
-                    email.setToCC(new String[]{EmailnhacnoApplication.getProperty("spring.mail.username")});
+//                    email.setToCC(new String[]{EmailnhacnoApplication.getProperty("spring.mail.username")});
                     email.setSubject(template.getTITLE());
                     email.setBody(templateService.getTemplate(kh, templateOpt, component, 0, reportDate));
                     email.setCustomerNo(kh.getCUSTOMER_NO());
