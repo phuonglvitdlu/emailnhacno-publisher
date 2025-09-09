@@ -8,25 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.stereotype.Service;
 import vab.com.vn.emailnhacno.EmailnhacnoApplication;
-import vab.com.vn.emailnhacno.entity.KhachHangEntity;
-import vab.com.vn.emailnhacno.entity.MailHistoryKey;
-import vab.com.vn.emailnhacno.entity.MailTemplate;
-import vab.com.vn.emailnhacno.entity.NhacNoVayEntity;
+import vab.com.vn.emailnhacno.entity.*;
 import vab.com.vn.emailnhacno.repository.*;
 import vab.com.vn.emailnhacno.service.canbo.ThauChiHHService;
 import vab.com.vn.emailnhacno.service.canbo.ThauChiQHService;
 import vab.com.vn.emailnhacno.service.canbo.VayQHService;
 import vab.com.vn.emailnhacno.service.canbo.VayDHService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class JobService {
     private static final Logger LOGGER = LoggerFactory.getLogger(JobService.class);
-
-    @Autowired
-    private SenderService senderService;
 
     @Autowired
     private ProducerService producerService;
@@ -52,7 +47,16 @@ public class JobService {
     private MailProperties mailProperties;
 
     @Autowired
-    private NhanVienRepository nhanVienRepo;
+    VayDHService vayDHService;
+
+    @Autowired
+    VayQHService vayQHService;
+
+    @Autowired
+    ThauChiHHService thauChiHHService;
+
+    @Autowired
+    ThauChiQHService thauChiQHService;
 
     public void executeService(String reportDate) {
         LOGGER.info("Start processing emails for date: {}", reportDate);
@@ -172,7 +176,7 @@ public class JobService {
                     email.setRunDate(reportDate);
 //                    email.setToEmail("phuonglv@vietabank.com.vn");
                     email.setToEmail(kh.getCUST_EMAIL());
-                    email.setToCC(new String[]{kh.getCUST_EMAIL()});
+//                    email.setToCC(new String[]{kh.getCUST_EMAIL()});
                     email.setSubject(template.getTITLE());
                     email.setBody(templateService.getTemplate(kh, templateOpt, component, 0, reportDate));
                     email.setCustomerNo(kh.getCUSTOMER_NO());
@@ -203,18 +207,6 @@ public class JobService {
     }
 
 
-    @Autowired
-    VayDHService vayDHService;
-
-    @Autowired
-    VayQHService vayQHService;
-
-    @Autowired
-    ThauChiHHService thauChiHHService;
-
-    @Autowired
-    ThauChiQHService thauChiQHService;
-
     private void processCBBList(String reportDatet) {
         LOGGER.info("START processing emails CANBO for date: {}", reportDatet);
         vayQHService.executeService(reportDatet);
@@ -224,4 +216,5 @@ public class JobService {
         LOGGER.info("END processing emails CANBO for date: {}", reportDatet);
 
     }
+
 }

@@ -10,9 +10,7 @@ import vab.com.vn.emailnhacno.entity.*;
 import vab.com.vn.emailnhacno.repository.*;
 import vab.com.vn.emailnhacno.service.TemplateService;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +33,9 @@ public class VayQHService {
     @Autowired
     private TemplateService templateService;
 
+    @Autowired
+    private NhanVienRepository nhanVienRepo;
+
 
     public void executeService(String reportDate) {
         LOGGER.info("Start processing emails VAY_QUA_HAN CB for date: {}", reportDate);
@@ -50,28 +51,62 @@ public class VayQHService {
         LOGGER.info("Hoàn thành xử lý email cho ngày: {}", reportDate);
     }
 
-    private void processCBBList(Map<String, List<NhacNoVayEntity>> branchToEntityList, String component, String reportDate, Optional<MailTemplate> templateCBOpt) {
-        EmailEntity email = new EmailEntity();
-        branchToEntityList.forEach((branch, list) -> {
-            List<String> listCBB = nhacNoVayRepository.getListCBBByBranch(branch);
-            email.setFromEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
-            email.setRunDate(reportDate);
-            email.setComponent(component);
-            email.setCustomerNo(branch);
-            email.setToEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
-//            email.setToEmail("phuonglv@vietabank.com.vn");
-            email.setToCC(listCBB.toArray(new String[0]));
-            email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
-            email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "VAY_QUA_HAN"));
+private void processCBBList(Map<String, List<NhacNoVayEntity>> branchToEntityList,
+                            String component,
+                            String reportDate,
+                            Optional<MailTemplate> templateCBOpt) {
+    branchToEntityList.forEach((branch, list) -> {
+        // Lấy tất cả MA_CB_BAN trong list của branch
+        Set<String> maCbBanSet = list.stream()
+                .map(NhacNoVayEntity::getMA_CB_BAN)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
 
-            MailHistoryKey mailHistoryKey = new MailHistoryKey();
-            mailHistoryKey.setRUN_DATE(reportDate);
-            mailHistoryKey.setMA_NV(branch);
-            mailHistoryKey.setCOMPONENT(component);
-            mailHistoryKey.setTIEU_DE(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
-            if (!mailHistoryRepo.existsById(mailHistoryKey)) {
-                producerService.sendEmail(email);
-            }
-        });
+        // Gom tất cả email của CBB + QLTT từ các MA_CB_BAN
+        Set<String> toEmails = new HashSet<>();
+        for (String maCbBan : maCbBanSet) {
+            List<NhanVienEntity> cbqlList = getObjectCBQLFromMaCBB(maCbBan);
+            cbqlList.stream()
+                    .map(NhanVienEntity::getNV_EMAIL) // chú ý sửa đúng getter của bạn
+                    .filter(Objects::nonNull)
+                    .forEach(toEmails::add);
+        }
+
+        // Lấy CC danh sách CBB của branch
+        List<String> listCBB = nhacNoVayRepository.getListCBBByBranch(branch);
+
+        EmailEntity email = new EmailEntity();
+        email.setFromEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
+        email.setRunDate(reportDate);
+        email.setComponent(component);
+        email.setCustomerNo(branch);
+
+        // Gom tất cả email thành chuỗi , ngăn cách
+        email.setToEmail(String.join(",", toEmails));
+
+        // CC
+        email.setToCC(listCBB.toArray(new String[0]));
+
+        email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
+        email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "VAY_QUA_HAN"));
+
+        MailHistoryKey mailHistoryKey = new MailHistoryKey();
+        mailHistoryKey.setRUN_DATE(reportDate);
+        mailHistoryKey.setMA_NV(branch);
+        mailHistoryKey.setCOMPONENT(component);
+        mailHistoryKey.setTIEU_DE(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
+
+        if (!mailHistoryRepo.existsById(mailHistoryKey)) {
+            producerService.sendEmail(email);
+        }
+    });
+}
+
+
+    private List<NhanVienEntity> getObjectCBQLFromMaCBB(String maCBB) {
+        List<NhanVienEntity> result = new ArrayList<>();
+        Optional<NhanVienEntity> objectCBBOpt = nhanVienRepo.getObjectByMaNV(maCBB);
+        objectCBBOpt.ifPresent(result::add);
+        return result;
     }
 }

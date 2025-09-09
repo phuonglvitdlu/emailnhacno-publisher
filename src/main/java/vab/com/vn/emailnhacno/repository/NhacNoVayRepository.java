@@ -31,15 +31,13 @@ public interface NhacNoVayRepository extends JpaRepository<NhacNoVayEntity, Stri
 //    List<String> getListCBBByBranch(@Param("branch") String branch);
 //live
     @Query(
-            value = "SELECT NV_EMAIL FROM V_EMAIL_NHAC_NO_DS_NV@EMAILNHACNO_QLNSTL_DBLINK\n" +
+            value = "SELECT NV_EMAIL FROM N_NHANVIEN_RM_CBQL\n" +
                     " WHERE CD_MA IN ('CV1056','CV1091','CV2058','CV2098','QL2009','QL1009','QL1047','CV3023',\n" +
                     "'CV3019','CV3016','CV3006','CV3004')\n" +
                     "and substr(dv_ma,1, 3)=:branch",
             nativeQuery = true
     )
-
     List<String> getListCBBByBranch(@Param("branch") String branch);
-
 
     @Query("SELECT T FROM NhacNoVayEntity T WHERE COMPONENT IN ('VAY_DEN_HAN','OD_DEN_HAN') AND T.MA_CB_BAN = :maCBB AND T.RUN_DATE =:RUN_DATE\n")
     List<NhacNoVayEntity> listKHVayDH(@Param("maCBB") String maCBB, @Param("RUN_DATE") String runDate);

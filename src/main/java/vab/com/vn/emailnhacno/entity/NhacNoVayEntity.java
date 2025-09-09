@@ -20,9 +20,7 @@ public class NhacNoVayEntity {
     private String CURRENCY;
     private String CUSTOMER_NO;
     private String TEN_KHACH_HANG;
-
     private String RM_PHUTRACH;
-
     private String NGAY_VAY;
     private BigDecimal SO_TIEN_VAY;
     private BigDecimal DU_NO_GOC_HIENTAI;
