@@ -95,7 +95,7 @@ public class VayDHService {
             email.setToCC(listCBB.toArray(new String[0]));
 
             email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
-            email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "VAY_QUA_HAN"));
+            email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "VAY_DEN_HAN"));
 
             MailHistoryKey mailHistoryKey = new MailHistoryKey();
             mailHistoryKey.setRUN_DATE(reportDate);
