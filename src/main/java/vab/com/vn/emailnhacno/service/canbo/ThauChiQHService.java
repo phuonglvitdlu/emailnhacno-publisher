@@ -37,6 +37,10 @@ public class ThauChiQHService {
     private TemplateService templateService;
 
     @Autowired
+    private NhanVienRepository nhanVienRepository;
+
+
+    @Autowired
     private NhanVienRepository nhanVienRepo;
 
     public void executeService(String reportDate) {
@@ -76,7 +80,10 @@ public class ThauChiQHService {
 
             // Lấy CC danh sách CBB của branch
             List<String> listCBB = nhacNoVayRepository.getListCBBByBranch(branch);
-
+            if(branch.equals("720")){
+                List<String> emails = nhanVienRepository.findEmailNhanVienByDvMa(branch);
+                listCBB.addAll(emails);
+            }
             EmailEntity email = new EmailEntity();
             email.setFromEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
             email.setRunDate(reportDate);
@@ -85,6 +92,7 @@ public class ThauChiQHService {
 
             // Gom tất cả email thành chuỗi , ngăn cách
             email.setToEmail(String.join(",", toEmails));
+            email.setToEmail("test5@vabtest.local");
 
             // CC
             email.setToCC(listCBB.toArray(new String[0]));

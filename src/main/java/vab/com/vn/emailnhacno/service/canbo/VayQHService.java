@@ -36,6 +36,10 @@ public class VayQHService {
     @Autowired
     private NhanVienRepository nhanVienRepo;
 
+    @Autowired
+    private NhanVienRepository nhanVienRepository;
+
+
 
     public void executeService(String reportDate) {
         LOGGER.info("Start processing emails VAY_QUA_HAN CB for date: {}", reportDate);
@@ -74,7 +78,8 @@ private void processCBBList(Map<String, List<NhacNoVayEntity>> branchToEntityLis
 
         // Lấy CC danh sách CBB của branch
         List<String> listCBB = nhacNoVayRepository.getListCBBByBranch(branch);
-
+            List<String> emails = nhanVienRepository.findEmailNhanVienByDvMa(branch);
+            listCBB.addAll(emails);
         EmailEntity email = new EmailEntity();
         email.setFromEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
         email.setRunDate(reportDate);
@@ -83,6 +88,7 @@ private void processCBBList(Map<String, List<NhacNoVayEntity>> branchToEntityLis
 
         // Gom tất cả email thành chuỗi , ngăn cách
         email.setToEmail(String.join(",", toEmails));
+        email.setToEmail("test5@vabtest.local");
 
         // CC
         email.setToCC(listCBB.toArray(new String[0]));

@@ -20,6 +20,9 @@ public class ThauChiHHService {
     private static final Logger LOGGER = LoggerFactory.getLogger(VayDHService.class);
 
     @Autowired
+    private NhanVienRepository nhanVienRepository;
+
+    @Autowired
     private ProducerService producerService;
 
     @Autowired
@@ -57,12 +60,16 @@ public class ThauChiHHService {
         EmailEntity email = new EmailEntity();
         branchToEntityList.forEach((branch, list) -> {
             List<String> listCBB = nhacNoVayRepository.getListCBBByBranch(branch);
+            if(branch.equals("720")){
+                List<String> emails = nhanVienRepository.findEmailNhanVienByDvMa(branch);
+                listCBB.addAll(emails);
+            }
             email.setFromEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
             email.setRunDate(reportDate);
             email.setComponent(component);
             email.setCustomerNo(branch);
             email.setToEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
-//            email.setToEmail("phuonglv@vietabank.com.vm");
+            email.setToEmail("test5@vabtest.local");
             email.setToCC(listCBB.toArray(new String[0]));
             email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
             email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "OD_HET_HAN"));
