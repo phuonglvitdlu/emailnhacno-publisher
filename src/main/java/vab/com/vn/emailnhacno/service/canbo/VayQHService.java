@@ -102,7 +102,7 @@ public class VayQHService {
 
             // Gom tất cả email thành chuỗi , ngăn cách
             email.setToEmail(String.join(",", toEmails));
-            email.setToEmail("test5@vabtest.local");
+//            email.setToEmail("test5@vabtest.local");
 
             // CC
             email.setToCC(listCBB.toArray(new String[0]));
