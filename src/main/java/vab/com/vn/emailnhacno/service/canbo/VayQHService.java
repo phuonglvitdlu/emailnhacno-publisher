@@ -39,7 +39,8 @@ public class VayQHService {
     @Autowired
     private NhanVienRepository nhanVienRepository;
 
-
+    @Autowired
+    private EmailNhacNoDmDviRepository emailNhacNoDmDviRepository;
 
     public void executeService(String reportDate) {
         LOGGER.info("Start processing emails VAY_QUA_HAN CB for date: {}", reportDate);
@@ -55,58 +56,71 @@ public class VayQHService {
         LOGGER.info("Hoàn thành xử lý email cho ngày: {}", reportDate);
     }
 
-private void processCBBList(Map<String, List<NhacNoVayEntity>> branchToEntityList,
-                            String component,
-                            String reportDate,
-                            Optional<MailTemplate> templateCBOpt) {
-    branchToEntityList.forEach((branch, list) -> {
-        // Lấy tất cả MA_CB_BAN trong list của branch
-        Set<String> maCbBanSet = list.stream()
-                .map(NhacNoVayEntity::getMA_CB_BAN)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
 
-        // Gom tất cả email của CBB + QLTT từ các MA_CB_BAN
-        Set<String> toEmails = new HashSet<>();
-        for (String maCbBan : maCbBanSet) {
-            List<NhanVienEntity> cbqlList = getObjectCBQLFromMaCBB(maCbBan);
-            cbqlList.stream()
-                    .map(NhanVienEntity::getNV_EMAIL) // chú ý sửa đúng getter của bạn
+    private void processCBBList(Map<String, List<NhacNoVayEntity>> branchToEntityList,
+                                String component,
+                                String reportDate,
+                                Optional<MailTemplate> templateCBOpt) {
+        branchToEntityList.forEach((branch, list) -> {
+            // Lấy tất cả MA_CB_BAN trong list của branch
+            Set<String> maCbBanSet = list.stream()
+                    .map(NhacNoVayEntity::getMA_CB_BAN)
                     .filter(Objects::nonNull)
-                    .forEach(toEmails::add);
-        }
+                    .collect(Collectors.toSet());
 
-        // Lấy CC danh sách CBB của branch
-        List<String> listCBB = nhacNoVayRepository.getListCBBByBranch(branch);
-            List<String> emails = nhanVienRepository.findEmailNhanVienByDvMa(branch);
+            // Gom tất cả email của CBB + QLTT từ các MA_CB_BAN
+            Set<String> toEmails = new HashSet<>();
+            for (String maCbBan : maCbBanSet) {
+                List<NhanVienEntity> cbqlList = getObjectCBQLFromMaCBB(maCbBan);
+                cbqlList.stream()
+                        .map(NhanVienEntity::getNV_EMAIL) // chú ý sửa đúng getter của bạn
+                        .filter(Objects::nonNull)
+                        .forEach(toEmails::add);
+            }
+
+            // Lấy CC danh sách CBB của branch
+            List<String> listCBB = nhacNoVayRepository.getListCBBByBranch(branch);
+            EmailNhacNoDmDviEntity dvi = null;
+            dvi = emailNhacNoDmDviRepository.findByDvMa(branch);
+            // Lấy CC danh sách CBB của branch
+
+            List<String> emails = nhanVienRepository.findEmailNhanVienByDvMa(dvi.getCnMa());
+
             listCBB.addAll(emails);
-        EmailEntity email = new EmailEntity();
-        email.setFromEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
-        email.setRunDate(reportDate);
-        email.setComponent(component);
-        email.setCustomerNo(branch);
+            // Loại bỏ email trùng
+            listCBB = listCBB.stream()
+                    .filter(Objects::nonNull)
+                    .map(String::trim)
+                    .distinct()
+                    .collect(Collectors.toList());
 
-        // Gom tất cả email thành chuỗi , ngăn cách
-        email.setToEmail(String.join(",", toEmails));
-        email.setToEmail("test5@vabtest.local");
+            EmailEntity email = new EmailEntity();
+            email.setFromEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
+            email.setRunDate(reportDate);
+            email.setComponent(component);
+            email.setCustomerNo(branch);
 
-        // CC
-        email.setToCC(listCBB.toArray(new String[0]));
+            // Gom tất cả email thành chuỗi , ngăn cách
+            email.setToEmail(String.join(",", toEmails));
+            email.setToEmail("test5@vabtest.local");
 
-        email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
-        email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "VAY_QUA_HAN"));
+            // CC
+            email.setToCC(listCBB.toArray(new String[0]));
 
-        MailHistoryKey mailHistoryKey = new MailHistoryKey();
-        mailHistoryKey.setRUN_DATE(reportDate);
-        mailHistoryKey.setMA_NV(branch);
-        mailHistoryKey.setCOMPONENT(component);
-        mailHistoryKey.setTIEU_DE(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
+            email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
+            email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "VAY_QUA_HAN"));
 
-        if (!mailHistoryRepo.existsById(mailHistoryKey)) {
-            producerService.sendEmail(email);
-        }
-    });
-}
+            MailHistoryKey mailHistoryKey = new MailHistoryKey();
+            mailHistoryKey.setRUN_DATE(reportDate);
+            mailHistoryKey.setMA_NV(branch);
+            mailHistoryKey.setCOMPONENT(component);
+            mailHistoryKey.setTIEU_DE(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
+
+            if (!mailHistoryRepo.existsById(mailHistoryKey)) {
+                producerService.sendEmail(email);
+            }
+        });
+    }
 
 
     private List<NhanVienEntity> getObjectCBQLFromMaCBB(String maCBB) {

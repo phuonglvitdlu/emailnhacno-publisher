@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface NhacNoVayRepository extends JpaRepository<NhacNoVayEntity, String> {
 
-    @Query(value = "SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM Nhac_No_Vay n WHERE n.COMPONENT = :component AND n.RUN_DATE = :runDate) sub WHERE sub.row_num = 1", nativeQuery = true)
+    //    @Query(value = "SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM Nhac_No_Vay n WHERE n.COMPONENT = :component AND n.RUN_DATE = :runDate) sub WHERE sub.row_num = 1", nativeQuery = true)
+    //    List<NhacNoVayEntity> getDataByComponent(@Param("component") String component, @Param("runDate") String runDate);
+    @Query(value = "SELECT * FROM (SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM Nhac_No_Vay n WHERE n.COMPONENT = :component AND n.RUN_DATE = :runDate) t WHERE t.row_num = 1) WHERE ROWNUM <= 5", nativeQuery = true)
     List<NhacNoVayEntity> getDataByComponent(@Param("component") String component, @Param("runDate") String runDate);
 
     @Query(value = "select n from NhacNoVayEntity n  WHERE n.COMPONENT = :component and n.CUSTOMER_NO = :customer_no and n.RUN_DATE =:RUN_DATE\n")
@@ -21,7 +23,7 @@ public interface NhacNoVayRepository extends JpaRepository<NhacNoVayEntity, Stri
     List<String> getMaCBB(@Param("RUN_DATE") String runDate, @Param("component") String component);
 
 
-//    @Query(
+    //    @Query(
 //            value = "SELECT NV_EMAIL FROM  V_EMAIL_NHAC_NO_DS_NV@DBLINK_QLNSTL\n" +
 //                    " WHERE CD_MA IN ('CV1056','CV1091','CV2058','CV2098','QL2009','QL1009','QL1047','CV3023',\n" +
 //                    "'CV3019','CV3016','CV3006','CV3004')\n" +
