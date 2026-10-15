@@ -123,7 +123,7 @@ public class ThauChiQHService {
             String content = templateService.getTemplateForVayCB(
                     list,
                     templateCBOpt,
-                    "VAY_QUA_HAN"
+                    "OD_QUA_HAN"
             );
             email.setBody(content);
 
