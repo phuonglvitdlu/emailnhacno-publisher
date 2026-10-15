@@ -28,13 +28,13 @@ public interface KhachHangRepository extends JpaRepository<KhachHangEntity, Stri
 //            @Param("CUSTOMER_NO") String CUSTOMER_NO
 //    );
 
-    @Query(value = "SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM N_KHACHHANG_NOTIEN n WHERE n.COMPONENT IN ('OD_DEN_HAN', 'THAUCHI_DEN_HAN') AND n.RUN_DATE = :runDate) sub WHERE sub.row_num = 1 AND ROWNUM <= 15", nativeQuery = true)
+    @Query(value = "SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM N_KHACHHANG_NOTIEN n WHERE n.COMPONENT IN ('OD_DEN_HAN', 'THAUCHI_DEN_HAN') AND n.RUN_DATE = :runDate) sub WHERE sub.row_num = 1 ", nativeQuery = true)
     List<KhachHangEntity> getDistinctByCustomerNoODDenHan(@Param("runDate") String runDate);
 
-    @Query(value = "SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM N_KHACHHANG_NOTIEN n WHERE n.COMPONENT IN ('OD_QUA_HAN') AND n.RUN_DATE = :runDate) sub WHERE sub.row_num = 1 AND ROWNUM <= 15", nativeQuery = true)
+    @Query(value = "SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM N_KHACHHANG_NOTIEN n WHERE n.COMPONENT IN ('OD_QUA_HAN') AND n.RUN_DATE = :runDate) sub WHERE sub.row_num = 1 ", nativeQuery = true)
     List<KhachHangEntity> getDistinctByCustomerNoODQuaHan(@Param("runDate") String runDate);
 
-    @Query(value = "SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM N_KHACHHANG_NOTIEN n WHERE n.COMPONENT IN ('OD_HET_HAN') AND n.RUN_DATE = :runDate) sub WHERE sub.row_num = 1 AND ROWNUM <= 15", nativeQuery = true)
+    @Query(value = "SELECT * FROM (SELECT n.*, ROW_NUMBER() OVER (PARTITION BY n.CUSTOMER_NO ORDER BY n.ACCOUNT_NUMBER ASC) AS row_num FROM N_KHACHHANG_NOTIEN n WHERE n.COMPONENT IN ('OD_HET_HAN') AND n.RUN_DATE = :runDate) sub WHERE sub.row_num = 1 ", nativeQuery = true)
     List<KhachHangEntity> getDistinctByCustomerNoODHetHan(@Param("runDate") String runDate);
 
     @Query("SELECT n FROM KhachHangEntity n WHERE n.COMPONENT IN (:COMPONENT) AND n.RUN_DATE = :RUN_DATE AND n.CUSTOMER_NO = :CUSTOMER_NO")

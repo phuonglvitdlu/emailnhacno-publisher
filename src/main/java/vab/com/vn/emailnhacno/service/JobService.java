@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.stereotype.Service;
+import vab.com.vn.emailnhacno.EmailnhacnoApplication;
 import vab.com.vn.emailnhacno.entity.*;
 import vab.com.vn.emailnhacno.repository.*;
 import vab.com.vn.emailnhacno.service.canbo.ThauChiHHService;
@@ -100,9 +101,8 @@ public class JobService {
                     }
                     email.setRunDate(reportDate);
                     email.setToEmail(kh.getEMAIL_KH());
-//                    email.setToEmail("phuonglv@vietab
-//                    ank.com.vn");
-//                    email.setToCC(new String[]{EmailnhacnoApplication.getProperty("spring.mail.username")});
+//                    email.setToEmail("test5@vabtest.local");
+                    email.setToCC(new String[]{EmailnhacnoApplication.getProperty("spring.mail.username")});
                     email.setSubject(template.getTITLE());
                     email.setBody(templateService.getTemplate(kh, templateOpt, component, 0, reportDate));
                     email.setCustomerNo(kh.getCUSTOMER_NO());
@@ -176,8 +176,8 @@ public class JobService {
                         return;
                     }
                     email.setRunDate(reportDate);
-                    email.setToEmail("test5@vabtest.local");
-//                    email.setToEmail(kh.getCUST_EMAIL());
+//                    email.setToEmail("test5@vabtest.local");
+                    email.setToEmail(kh.getCUST_EMAIL());
 //                    email.setToCC(new String[]{kh.getCUST_EMAIL()});
                     email.setEmailType("KH");
                     email.setSubject(template.getTITLE());

@@ -80,13 +80,31 @@ public class VayQHService {
 
             // Lấy CC danh sách CBB của branch
             List<String> listCBB = nhacNoVayRepository.getListCBBByBranch(branch);
-            EmailNhacNoDmDviEntity dvi = null;
-            dvi = emailNhacNoDmDviRepository.findByDvMa(branch);
-            // Lấy CC danh sách CBB của branch
+            EmailNhacNoDmDviEntity dvi = emailNhacNoDmDviRepository.findByDvMa(branch);
 
-            List<String> emails = nhanVienRepository.findEmailNhanVienByDvMa(dvi.getCnMa());
+            System.out.println("Branch: " + branch);
+            System.out.println("dvi is null: " + (dvi == null));
 
-            listCBB.addAll(emails);
+            if (dvi == null) {
+                System.out.println("Cannot find DVI for branch: " + branch);
+                return;
+            }
+
+            String cnMa = dvi.getCnMa();
+            System.out.println("CN_MA: " + cnMa);
+
+            List<String> emails = nhanVienRepository.findEmailNhanVienByDvMa(cnMa);
+
+            System.out.println("Emails is null: " + (emails == null));
+            System.out.println("Emails detail: " + emails);
+
+            if (emails != null) {
+                if (listCBB == null) {
+                    listCBB = new ArrayList<>();
+                }
+                listCBB.addAll(emails);
+            }
+
             // Loại bỏ email trùng
             listCBB = listCBB.stream()
                     .filter(Objects::nonNull)
@@ -94,27 +112,44 @@ public class VayQHService {
                     .distinct()
                     .collect(Collectors.toList());
 
+
             EmailEntity email = new EmailEntity();
-            email.setFromEmail(EmailnhacnoApplication.getProperty("spring.mail.username"));
+
+            email.setFromEmail(
+                    EmailnhacnoApplication.getProperty("spring.mail.username")
+            );
             email.setRunDate(reportDate);
             email.setComponent(component);
             email.setCustomerNo(branch);
+            email.setEmailType("CB");
 
-            // Gom tất cả email thành chuỗi , ngăn cách
+            // TO recipients
             email.setToEmail(String.join(",", toEmails));
-//            email.setToEmail("test5@vabtest.local");
 
-            // CC
+            // CC recipients
             email.setToCC(listCBB.toArray(new String[0]));
 
-            email.setTieuDe(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
-            email.setBody(templateService.getTemplateForVayCB(list, templateCBOpt, "VAY_QUA_HAN"));
+            // Email subject
+            String tieuDe = templateCBOpt
+                    .map(MailTemplate::getTITLE)
+                    .orElse("Default Title");
+            email.setTieuDe(tieuDe);
 
+            // Email content
+            String content = templateService.getTemplateForVayCB(
+                    list,
+                    templateCBOpt,
+                    "VAY_QUA_HAN"
+            );
+            email.setBody(content);
+
+            // Create MailHistoryKey
             MailHistoryKey mailHistoryKey = new MailHistoryKey();
             mailHistoryKey.setRUN_DATE(reportDate);
             mailHistoryKey.setMA_NV(branch);
             mailHistoryKey.setCOMPONENT(component);
-            mailHistoryKey.setTIEU_DE(templateCBOpt.map(MailTemplate::getTITLE).orElse("Default Title"));
+            mailHistoryKey.setTIEU_DE(tieuDe);
+            mailHistoryKey.setEMAIL_TYPE("CB");
 
             if (!mailHistoryRepo.existsById(mailHistoryKey)) {
                 producerService.sendEmail(email);
